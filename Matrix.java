@@ -30,7 +30,12 @@ public class Matrix {
         
         // Adds the separated values to the 'numbers' array
         for(int i = 0; i < parts.length; i++) {
-            numbers[i] = Integer.parseInt(parts[i]);
+            // Checks if the ith value is actually initalized or not. If it is not (i.e. is represented by the value x), then its value is initialized to the minimum integer value to avoid confusion with other values.
+            if(parts[i].equals("x")) {
+                numbers[i] = Integer.MIN_VALUE;
+            } else {
+                numbers[i] = Integer.parseInt(parts[i]);
+            }
         }
         
         // Calculates the max size of a square matrix using the provided values. This always rounds down, so if the string of provided values isn't a perfect square, some values will be lost
@@ -57,7 +62,7 @@ public class Matrix {
         
         for(int i = 0; i < matrix.length; i++) {
             for(int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j] + " ");
+                System.out.printf("%11d%3s",matrix[i][j], "");
             
             
             }
