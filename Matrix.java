@@ -52,13 +52,39 @@ public class Matrix {
         }        
     }
     
-    // Print method
+    /**
+    * Print method, which prints the values as a square grid.
+    */
     public static void print() {        
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
-                System.out.printf("%f ", matrix[i * size + j]);
+                System.out.printf("%11f ", matrix[i * size + j]);
             }
             System.out.println();
         }
     }
+    
+    /**
+    * Returns a specified value in the matrix.
+    * @param r The row to search (0-indexed)
+    * @param c The column to search (0-indexed)
+    */
+    public double getValue(int r, int c) {
+        return matrix[r*size + c];
+    }
+    
+    /**
+    * Setter for a specific value in a matrix object
+    * @param r The row position (0-indexed)
+    * @param c The column position (0-indexed)
+    * @param v The new value 
+    */
+    public void setValue(int r, int c, double v) {
+        if(r < 0 || r >= size || c < 0 || c >= size) {
+            throw new IllegalArgumentException("Index (" + r + "," + c + ") is out of bounds.");
+        } else {
+            matrix[r*size + c] = v;
+        }
+    }
+    
 }
