@@ -65,6 +65,13 @@ public class Matrix {
     }
     
     /**
+    * Returns the size of the matrix.
+    */
+    public double getSize() {
+        return size;
+    }
+    
+    /**
     * Returns a specified value in the matrix.
     * @param r The row to search (0-indexed)
     * @param c The column to search (0-indexed)
