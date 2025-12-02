@@ -1,14 +1,14 @@
 public class Matrix {
     // Instance variables
     private int size;
-    private static int[][] matrix;
+    private static double[][] matrix;
     
     /** 
     * Default constructor for a matrix object. Initializes the size to 1 with a value of 0.
     */
     public Matrix() {
         size = 1;
-        matrix = new int[size][size];
+        matrix = new double[size][size];
     }
     
     /** 
@@ -17,7 +17,7 @@ public class Matrix {
     */
     public Matrix(int size) {
         this.size = size;
-        matrix = new int[size][size];
+        matrix = new double[size][size];
     }
     
     /**
@@ -26,15 +26,15 @@ public class Matrix {
     public Matrix(String values) {
         // Parses the string of values
         String[] parts = values.split("-");
-        int[] numbers = new int[parts.length];
+        double[] numbers = new double[parts.length];
         
         // Adds the separated values to the 'numbers' array
         for(int i = 0; i < parts.length; i++) {
             // Checks if the ith value is actually initalized or not. If it is not (i.e. is represented by the value x), then its value is initialized to the minimum integer value to avoid confusion with other values.
             if(parts[i].equals("x")) {
-                numbers[i] = Integer.MIN_VALUE;
+                numbers[i] = Double.NEGATIVE_INFINITY;
             } else {
-                numbers[i] = Integer.parseInt(parts[i]);
+                numbers[i] = Double.parseDouble(parts[i]);
             }
         }
         
@@ -42,7 +42,7 @@ public class Matrix {
         int maxSize = (int)Math.sqrt(numbers.length);
         
         size = maxSize;
-        matrix = new int[size][size];
+        matrix = new double[size][size];
         
         // This is the index of the 'values' array
         int k = 0;
@@ -62,7 +62,7 @@ public class Matrix {
         
         for(int i = 0; i < matrix.length; i++) {
             for(int j = 0; j < matrix[i].length; j++) {
-                System.out.printf("%11d%3s",matrix[i][j], "");
+                System.out.printf("%11f%3s",matrix[i][j], "");
             }
             System.out.println();
         }
