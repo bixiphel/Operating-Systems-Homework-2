@@ -15,7 +15,13 @@ public class Matrix {
     * 1-arg constructor for an integer (square) matrix object, which is a nxn matrix of integers.
     * @param size Sets the size of the matrix. 
     */
-    public Matrix(int size) {    
+    public Matrix(int size) {
+    
+        // Catches negative sizes
+        if(size <= 0) {
+            throw new IllegalArgumentException("Matrix size must be positive");
+        }    
+        
         this.size = size;
         matrix = new double[size * size];
     }
@@ -24,6 +30,10 @@ public class Matrix {
     * 1-arg constructor for initializing a matrix with values. 
     */
     public Matrix(String values) {
+        if(values == null || values.isEmpty()) {
+            throw new IllegalArgumentException("String cannot be empty");
+        }
+    
         // Splits string on instances of "-"
         String[] parts = values.split("-");
         
@@ -43,9 +53,7 @@ public class Matrix {
     }
     
     // Print method
-    public static void print() {
-        System.out.println("Test!\n");
-        
+    public static void print() {        
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
                 System.out.printf("%f ", matrix[i * size + j]);
