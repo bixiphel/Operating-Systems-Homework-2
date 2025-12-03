@@ -33,7 +33,7 @@ public class Worker extends Thread {
         double nextMatrixError = nextMatrix.totalAverage();
         double totalError = Math.abs(nextMatrixError - matrixError);
         
-        while(totalError > 5.0) {
+        while(totalError > 0.00001) {
             for(int r = startRow; r <= endRow; r++) {
                 for(int c = 0; c < matrix.getSize(); c++) {
                     if(matrix.isFixed(r,c)) {
@@ -43,10 +43,6 @@ public class Worker extends Thread {
                     }
                 } 
             }
-            // Prints out the current iteration's matrix
-            System.out.printf("Iteration number %d:%n", ++iterations);
-            nextMatrix.print();
-            System.out.println();
             
             // Sets up for the next iteration
             matrixError = matrix.totalAverage();
@@ -54,11 +50,10 @@ public class Worker extends Thread {
             totalError = Math.abs(nextMatrixError - matrixError);
             matrix = nextMatrix;
             nextMatrix = new Matrix(matrix.getSize());
-                    
+            iterations++;
         }
         
         // Prints out results
-        System.out.printf("Total Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d", totalError, nextMatrixError, threadID, iterations);
-         
+        System.out.printf("Total Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%n", totalError, nextMatrixError, threadID, iterations);
     }
 }
