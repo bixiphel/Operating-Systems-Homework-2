@@ -1,5 +1,5 @@
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
         // Creates initialized matrix using values provided in the assignment overview  
         Matrix m1 = new Matrix(5);
               
@@ -21,27 +21,22 @@ public class Main {
         // Creates empty matrix to use as the next step
         Matrix m2 = new Matrix(5);
         
-        // Initializes variables to compare results
-        double sum = 0;
         int count = 2;
-        double time = 0;
+        
+        long actualT1 = System.nanoTime();
         
         for(int i = 0; i < count; i++) {
             // Creates a thread
-            Worker thread1 = new Worker(m1, m2, 0, 4, 5.0);
+            Worker thread1 = new Worker(m1, m2, 0, 4, 0.1);
                     
-            // Times how long the thread execution takes
-            long t1 = System.nanoTime();
+            // Runs the thread
             thread1.run();
-            long t2 = System.nanoTime();
-            
-            time = (1.0 * (t2 - t1))/1000000;
-            
-            System.out.printf("Execution time (ms): %f%n%n", time);
-            
-            sum += time;
         }
-                
-        System.out.printf("Number of threads run: %d | Total Execution Time (ms): %f | Average execution time per thread (ms): %f", count, sum, sum/count); 
+        
+        long actualT2 = System.nanoTime(); 
+        
+        double totalTime = (1.0 *(actualT2 - actualT1))/1000000;
+        
+        System.out.printf("Actual total run time: %f | *Total* Time per thread (ms): %f%n", totalTime, totalTime/count);
     }
 }

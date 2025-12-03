@@ -6,6 +6,8 @@ public class Worker extends Thread {
     private final int endRow;          // Last row this thread handles
     private int iterations;            // Count of iterations this thread ran
     private double threshold;          // Sets the error threshold
+    private long t1;
+    private long t2;
 
     // Constructor without barrier (simple multithreading)
     public Worker(Matrix m1, Matrix m2, int startRow, int endRow, double threshold) {
@@ -15,6 +17,8 @@ public class Worker extends Thread {
         this.endRow = endRow;
         this.iterations = 0;
         this.threshold = threshold;
+        t1 = 0;
+        t2 = 0;
     }
 
     @Override
@@ -30,6 +34,8 @@ public class Worker extends Thread {
         double matrixError = matrix.totalAverage();
         double nextMatrixError = nextMatrix.totalAverage();
         double totalError = Math.abs(nextMatrixError - matrixError);
+        
+        t1 = System.nanoTime();
         
         while(totalError > threshold) {
             for(int r = startRow; r <= endRow; r++) {
@@ -49,9 +55,10 @@ public class Worker extends Thread {
             matrix = nextMatrix;
             nextMatrix = new Matrix(matrix.getSize());
             iterations++;
+            t2 = System.nanoTime();            
         }
-        
+                
         // Prints out results
-        System.out.printf("Total Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%n", totalError, nextMatrixError, threadID, iterations);
+        System.out.printf("Total Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%nExecution Time (ms): %f%n", totalError, nextMatrixError, threadID, iterations, (1.0*(t2-t1))/1000000);
     }
 }
