@@ -158,4 +158,19 @@ public class Matrix {
         }
         return sum / count;
     }   
+    
+    /**
+    * Calculates the average over the whole matrix and returns the result
+    * @return The decimal average of the entire matrix
+    */
+    public double totalAverage() {
+        double sum = 0.0;
+        int count = 0;
+        
+        for(double num: matrix) {
+            sum += num;
+            count++;
+        }
+        return sum / count;
+    }
 }
