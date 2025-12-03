@@ -1,8 +1,8 @@
 public class Matrix {
     // Instance variables
-    private static int size;
-    private static double[] matrix; // For future optimizations, the matrix itself is represented as a 1d array with a size of n*n
-    private static boolean[] fixed; // Similar to the matrix, but contains flags for cells that are fixed values
+    private final int size;
+    private double[] matrix; // For future optimizations, the matrix itself is represented as a 1d array with a size of n*n
+    private boolean[] fixed; // Similar to the matrix, but contains flags for cells that are fixed values
     
     /** 
     * Default constructor for a matrix object. Initializes the size to 1 with a value of 0.
@@ -22,11 +22,12 @@ public class Matrix {
         // Catches negative sizes
         if(size <= 0) {
             throw new IllegalArgumentException("Matrix size must be positive");
-        }    
-        
+        }
+          
         this.size = size;
         matrix = new double[size * size];
         fixed = new boolean[size*size];
+
     }
     
     /**
@@ -41,7 +42,7 @@ public class Matrix {
         String[] parts = values.split("-");
         
         // Calculates the largest value of n where a nxn matrix can be created with the provided array of values
-        this.size = (int) Math.floor(Math.sqrt(parts.length)); 
+        size = (int) Math.floor(Math.sqrt(parts.length)); 
      
         // Instantiates the matrix and its flags arrays
         matrix = new double[size * size];
@@ -63,7 +64,7 @@ public class Matrix {
     /**
     * Print method, which prints the values as a square grid.
     */
-    public static void print() {        
+    public void print() {        
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
                 System.out.printf("%11f ", matrix[i * size + j]);
@@ -75,7 +76,7 @@ public class Matrix {
     /**
     * Returns the size of the matrix.
     */
-    public double getSize() {
+    public int getSize() {
         return size;
     }
     
@@ -153,10 +154,8 @@ public class Matrix {
             if(c < size - 1) {
                 sum += matrix[r*size + (c+1)];
                 count++;
-            }
-            
+            }   
         }
-        
         return sum / count;
     }   
 }
