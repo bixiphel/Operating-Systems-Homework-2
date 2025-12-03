@@ -4,19 +4,17 @@ public class Worker extends Thread {
     private Matrix nextMatrix;   // Matrix to store updated values
     private final int startRow;        // First row this thread handles
     private final int endRow;          // Last row this thread handles
-    private final int threshold;       // Error threshold for stopping
     private int iterations;            // Count of iterations this thread ran
-    private double localError;         // Error for this thread
+    private double threshold;          // Sets the error threshold
 
     // Constructor without barrier (simple multithreading)
-    public Worker(Matrix m1, Matrix m2, int startRow, int endRow, int threshold) {
+    public Worker(Matrix m1, Matrix m2, int startRow, int endRow, double threshold) {
         this.matrix = m1;
         this.nextMatrix = m2;
         this.startRow = startRow;
         this.endRow = endRow;
-        this.threshold = threshold;
         this.iterations = 0;
-        this.localError = 0.0;
+        this.threshold = threshold;
     }
 
     @Override
@@ -28,12 +26,12 @@ public class Worker extends Thread {
         System.out.println("Hello from thread " + threadID + "!");
         
         // Calculates the error between the original matrix and the next iteration
-        // Note that the average of a given matrix is the average of *every* cell in the matrix **INCLUDING** uninitialized variables. Since the initialized values are fixed, uninitialized values have no effect.    
+        // Note that the average of a given matrix is the average of *every* cell in the matrix **INCLUDING** uninitialized variables.    
         double matrixError = matrix.totalAverage();
         double nextMatrixError = nextMatrix.totalAverage();
         double totalError = Math.abs(nextMatrixError - matrixError);
         
-        while(totalError > 0.00001) {
+        while(totalError > threshold) {
             for(int r = startRow; r <= endRow; r++) {
                 for(int c = 0; c < matrix.getSize(); c++) {
                     if(matrix.isFixed(r,c)) {
