@@ -17,26 +17,39 @@ public class Main {
             m1.setValue(i,4,72,true);
         }
         
-        // Step 1: Single Thread Solution
         // Creates empty matrix to use as the next step
         Matrix m2 = new Matrix(5);
         
-        int count = 2;
+        // --------------------------------------------------
+        // Step 1: Single Thread Solution
+        // --------------------------------------------------
+        int count = 5;
+        double threshold = 5.0;
         
-        long actualT1 = System.nanoTime();
+        System.out.println("=== SingleThread Test ===");
+        SingleThread thread1 = new SingleThread(m1, m2, count, threshold);
+        thread1.run();   // (you are using run(), so I kept your style)
         
-        for(int i = 0; i < count; i++) {
-            // Creates a thread
-            Worker thread1 = new Worker(m1, m2, 0, 4, 0.1);
-                    
-            // Runs the thread
-            thread1.run();
+        
+        // --------------------------------------------------
+        // Step 2: MultiThread Solution
+        // --------------------------------------------------
+        System.out.println("\n=== MultiThread Test ===");
+
+        // Recreate matrices so they start with the same values
+        Matrix m1_multi = new Matrix(5);
+        Matrix m2_multi = new Matrix(5);
+
+        for(int i = 1; i < 4; i++) {
+            m1_multi.setValue(i,0,15,true);
+            m1_multi.setValue(0,i,30,true);
+            m1_multi.setValue(4,i,75,true);
+            m1_multi.setValue(i,4,72,true);
         }
-        
-        long actualT2 = System.nanoTime(); 
-        
-        double totalTime = (1.0 *(actualT2 - actualT1))/1000000;
-        
-        System.out.printf("Actual total run time: %f | *Total* Time per thread (ms): %f%n", totalTime, totalTime/count);
+
+        int numThreads = 4;   // up to 4 threads
+
+        MultiThread mt = new MultiThread(m1_multi, m2_multi, numThreads, threshold);
+        mt.run();   // matching your style (run instead of start)
     }
 }

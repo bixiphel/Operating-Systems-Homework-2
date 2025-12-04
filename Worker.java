@@ -17,8 +17,6 @@ public class Worker extends Thread {
         this.endRow = endRow;
         this.iterations = 0;
         this.threshold = threshold;
-        t1 = 0;
-        t2 = 0;
     }
 
     @Override
@@ -26,8 +24,6 @@ public class Worker extends Thread {
         // This is for the "getId()" method, which was deprecated at some point. This is a small project so it doesn't matter.
         @SuppressWarnings("deprecation")
         long threadID = getId();
-        
-        System.out.println("Hello from thread " + threadID + "!");
         
         // Calculates the error between the original matrix and the next iteration
         // Note that the average of a given matrix is the average of *every* cell in the matrix **INCLUDING** uninitialized variables.    
@@ -37,7 +33,7 @@ public class Worker extends Thread {
         
         t1 = System.nanoTime();
         
-        while(totalError > threshold) {
+        while(totalError >= threshold) {
             for(int r = startRow; r <= endRow; r++) {
                 for(int c = 0; c < matrix.getSize(); c++) {
                     if(matrix.isFixed(r,c)) {
@@ -54,11 +50,12 @@ public class Worker extends Thread {
             totalError = Math.abs(nextMatrixError - matrixError);
             matrix = nextMatrix;
             nextMatrix = new Matrix(matrix.getSize());
-            iterations++;
-            t2 = System.nanoTime();            
+            iterations++;           
         }
+        
+        t2 = System.nanoTime(); 
                 
         // Prints out results
-        System.out.printf("Total Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%nExecution Time (ms): %f%n", totalError, nextMatrixError, threadID, iterations, (1.0*(t2-t1))/1000000);
+        System.out.printf("%nThread %d Finished.%nTotal Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%nExecution Time (ms): %f%n%n", threadID, totalError, nextMatrixError, threadID, iterations, (1.0*(t2-t1))/1000000);
     }
 }
