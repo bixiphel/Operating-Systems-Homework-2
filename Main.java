@@ -1,3 +1,5 @@
+import java.util.concurrent.CyclicBarrier;
+
 public class Main {
     public static void main(String[] args) {        
         // Creates initialized matrix using values provided in the assignment overview  
@@ -33,20 +35,42 @@ public class Main {
         // Step 2: MultiThread Solution
         System.out.println("\n---------- MultiThread Test ----------");
 
-        // Recreate matrices so they start with the same values
-        Matrix m1_multi = new Matrix(5);
-        Matrix m2_multi = new Matrix(5);
-
-        for(int i = 1; i < 4; i++) {
-            m1_multi.setValue(i,0,15,true);
-            m1_multi.setValue(0,i,30,true);
-            m1_multi.setValue(4,i,75,true);
-            m1_multi.setValue(i,4,72,true);
-        }
-
         int numThreads = 4;
 
-        MultiThread mt = new MultiThread(m1_multi, m2_multi, numThreads, threshold);
+        MultiThread mt = new MultiThread(m1, m2, numThreads, threshold);
         mt.run();
+        
+        // -----------------------------------------------------------------
+        
+        // Step 3: Barrier solution
+        System.out.println("---------- Barrier Test ----------");
+        numThreads = 4;   // 4 threads like step 2
+
+        // Create the barrier that waits for all threads
+        CyclicBarrier barrier = new CyclicBarrier(numThreads);
+
+        // Create arrays for threads
+        Thread[] threads = new Thread[numThreads];
+
+        int rowsPerThread = m1.getSize() / numThreads;
+
+        for (int i = 0; i < numThreads; i++) {
+            int startRow = i * rowsPerThread;
+            int endRow = (i == numThreads - 1) ? m1.getSize() : startRow + rowsPerThread;
+
+            threads[i] = new BarrierWorker(m1, m2, startRow, endRow, threshold, barrier);
+
+            threads[i].start();
+        }
+
+        // Wait for all threads to finish
+        for (Thread t : threads) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+       
     }
 }
