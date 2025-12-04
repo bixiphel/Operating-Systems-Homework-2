@@ -62,7 +62,6 @@ public class MultiThread extends Thread {
         long t2 = System.nanoTime();
 
         // Final results output
-        System.out.printf(
-            "All %d threads completed. Total time: %.4f ms%n", numThreads, (1.0 * (t2 - t1)) / 1000000);
+        System.out.printf("All %d threads completed. Total time: %.4f (ms)%n", numThreads, (1.0 * (t2 - t1)) / 1000000);
     }
 }
