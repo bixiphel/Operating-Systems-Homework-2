@@ -67,6 +67,7 @@ public class BarrierWorker extends Thread {
                 Matrix temp = matrix;
                 matrix = nextMatrix;
                 nextMatrix = temp;
+                iterations++;
 
                 // Wait again before starting next iteration
                 barrier.await();
