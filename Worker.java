@@ -53,11 +53,11 @@ public class Worker extends Thread {
             iterations++;        
             
             totalTime = System.nanoTime() - t1;
-            System.err.printf("%nThread ID: %d | Execution Time: %f%n", threadID, (totalTime * 1.0)/1000000);
+            System.err.printf("%nThread ID: %d | Execution Time: %.2f%n", threadID, (totalTime * 1.0)/1000000);
         }
           
         // Prints out results
-        System.out.printf("%nThread %d Finished.%nTotal Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%nExecution Time (ms): %f%n%n", 
+        System.out.printf("%nThread %d Finished.%nTotal Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%nExecution Time (ms): %.2f%n%n", 
             threadID, 
             totalError, 
             nextMatrixError, 

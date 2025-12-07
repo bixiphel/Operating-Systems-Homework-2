@@ -43,7 +43,7 @@ public class BarrierWorker extends Thread {
             
             long t1 = System.nanoTime();
             
-            while (totalError >= threshold) {
+            while (totalError > threshold) {
 
                 // Compute next values for assigned rows
                 for (int row = startRow; row < endRow; row++) {
@@ -67,7 +67,7 @@ public class BarrierWorker extends Thread {
                 Matrix temp = matrix;
                 matrix = nextMatrix;
                 nextMatrix = temp;
-                iterations++;
+                this.iterations++;
 
                 // Wait again before starting next iteration
                 barrier.await();
@@ -76,7 +76,7 @@ public class BarrierWorker extends Thread {
             long t2 = System.nanoTime();
             
             // Prints out results
-        System.out.printf("%nThread %d Finished.%nTotal Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%nExecution Time (ms): %f%n%n", threadID, totalError, nextMatrixError, threadID, iterations, (1.0*(t2-t1))/1000000);
+        System.out.printf("%nThread %d Finished.%nTotal Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%nExecution Time (ms): %.2f%n%n", threadID, totalError, nextMatrixError, threadID, iterations, (1.0*(t2-t1))/1000000);
 
         } catch (Exception e) {
             e.printStackTrace();

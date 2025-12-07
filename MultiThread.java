@@ -42,6 +42,8 @@ public class MultiThread extends Thread {
 
             start = end + 1;
         }
+    
+        long t1 = System.nanoTime();
 
         // Start all workers
         for (Worker w : workers) {
@@ -56,5 +58,8 @@ public class MultiThread extends Thread {
                 e.printStackTrace();
             }
         }
+        
+        long t2 = System.nanoTime();
+        System.out.printf("%nTotal time: %.2f%n", (1.0 * (t2-t1))/1000000);
     }
 }

@@ -52,7 +52,9 @@ public class Main {
         Thread[] threads = new Thread[numThreads];
 
         int rowsPerThread = m1.getSize() / numThreads;
-
+        
+        long t1 = System.nanoTime();
+        
         for (int i = 0; i < numThreads; i++) {
             int startRow = i * rowsPerThread;
             int endRow = (i == numThreads - 1) ? m1.getSize() : startRow + rowsPerThread;
@@ -70,6 +72,48 @@ public class Main {
                 e.printStackTrace();
             }
         }
+        
+        long t2 = System.nanoTime();
+        System.out.printf("%nTotal time: %.2f%n", (1.0 * (t2-t1))/1000000);
+        
+        // -----------------------------------------------------------------
+        // Step 4: Test larger matrix
+        System.out.println("---------- Big Matrix Test ----------");
+        m1 = new Matrix(50);
+        for(int i = 1; i < 49; i++) {
+            // Sets the cells with a '15' in it
+            m1.setValue(i,0,15,true);
+            
+            // Sets the cells with a '30' in it
+            m1.setValue(0,i,30,true);
+            
+            // Sets the cells with a '75' in it
+            m1.setValue(49,i,75,true);
+            
+            // Sets the cells with a '72' in it
+            m1.setValue(i,49,72,true);
+        }
+        
+        // Seeds the matrix with some random values
+        for(int i = 0; i < m1.getSize(); i++) {
+            for(int j = 0; j < m1.getSize(); j++) {
+                double coinFlip = Math.random();
+                if(coinFlip * 100 >= 95.0) {
+                    coinFlip = Math.random() * 100;
+                    m1.setValue(i, j, coinFlip, false);
+                }
+            }
+        }
+        m2 = new Matrix(50);
+        
+        System.out.println(">> Big Matrix Test: Single Thread <<");
+        SingleThread thread2 = new SingleThread(m1, m2, threshold);
+        thread2.run();
+        
+        System.out.println("\n>> Big Matrix Test: Multi Thread <<");
+        mt = new MultiThread(m1, m2, numThreads, threshold);
+        mt.run();
+        
        
     }
 }
