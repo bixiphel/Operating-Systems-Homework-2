@@ -23,11 +23,10 @@ public class Main {
         Matrix m2 = new Matrix(5);
         
         // Step 1: Single Thread Solution
-        int count = 5;
-        double threshold = 5.0;
+        double threshold = 0.000001;
         
         System.out.println("---------- SingleThread Test ----------");
-        SingleThread thread1 = new SingleThread(m1, m2, count, threshold);
+        SingleThread thread1 = new SingleThread(m1, m2, threshold);
         thread1.run();
         
         // -----------------------------------------------------------------
