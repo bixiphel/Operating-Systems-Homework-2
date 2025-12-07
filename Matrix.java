@@ -64,7 +64,8 @@ public class Matrix {
     /**
     * Print method, which prints the values as a square grid.
     */
-    public void print() {        
+    public void print() {  
+        System.out.println();      
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
                 System.out.printf("%11f ", matrix[i * size + j]);

@@ -29,7 +29,11 @@ public class SingleThread extends Thread {
         long actualT1 = System.nanoTime();
         
         // Runs the thread
-        thread1.run();
+        try {
+            thread1.run();
+        } catch (Exception E) {
+            return;
+        }
         
         // Stops the clock
         long actualT2 = System.nanoTime(); 

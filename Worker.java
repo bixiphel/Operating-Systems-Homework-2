@@ -7,7 +7,7 @@ public class Worker extends Thread {
     private int iterations;            // Count of iterations this thread ran
     private double threshold;          // Sets the error threshold
     private long t1;
-    private long t2;
+    private long totalTime;
 
     // Constructor without barrier (simple multithreading)
     public Worker(Matrix m1, Matrix m2, int startRow, int endRow, double threshold) {
@@ -17,6 +17,8 @@ public class Worker extends Thread {
         this.endRow = endRow;
         this.iterations = 0;
         this.threshold = threshold;
+        t1 = System.nanoTime();
+        totalTime = 0;
     }
 
     @Override
@@ -31,9 +33,7 @@ public class Worker extends Thread {
         double nextMatrixError = nextMatrix.totalAverage();
         double totalError = Math.abs(nextMatrixError - matrixError);
         
-        t1 = System.nanoTime();
-        
-        while(totalError >= threshold) {
+        while(totalError > threshold) {
             for(int r = startRow; r <= endRow; r++) {
                 for(int c = 0; c < matrix.getSize(); c++) {
                     if(matrix.isFixed(r,c)) {
@@ -50,12 +50,19 @@ public class Worker extends Thread {
             totalError = Math.abs(nextMatrixError - matrixError);
             matrix = nextMatrix;
             nextMatrix = new Matrix(matrix.getSize());
-            iterations++;           
+            iterations++;        
+            
+            totalTime = System.nanoTime() - t1;
+            System.err.printf("%nThread ID: %d | Execution Time: %f%n", threadID, (totalTime * 1.0)/1000000);
         }
-        
-        t2 = System.nanoTime(); 
-                
+          
         // Prints out results
-        System.out.printf("%nThread %d Finished.%nTotal Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%nExecution Time (ms): %f%n%n", threadID, totalError, nextMatrixError, threadID, iterations, (1.0*(t2-t1))/1000000);
+        System.out.printf("%nThread %d Finished.%nTotal Grid Error: %f | Grid Average Temperature: %f | Iterations run on thread %d: %d%nExecution Time (ms): %f%n%n", 
+            threadID, 
+            totalError, 
+            nextMatrixError, 
+            threadID, 
+            iterations, 
+            (1.0 * (totalTime)) / 1000000);
     }
 }
